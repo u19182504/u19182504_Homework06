@@ -1,0 +1,337 @@
+﻿@model IEnumerable<HWAssignment06.Controllers.ProductsController.product2>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+</head>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="heading" class="modal-title">Create Product</h4>
+            </div>
+            <div class="modal-body">
+                <div hidden>
+                    <label>productID:</label>
+                    <input class="form-control" disabled type="number" id="pid" placeholder="pid" />
+                </div>
+                <label>Name:</label>
+                <input class="form-control" type="text" id="name" placeholder="Name" />
+                <br />
+                <br />
+                <label>Year:</label>
+                <input class="form-control" type="text" id="year" placeholder="xxxx" />
+
+                <br />
+                <br />
+                <label>Brands:</label>
+                <select class="form-control" id="brandsDropdown" name="brandsDropdown"></select>
+
+                <br />
+                <br />
+
+                <label>Categories:</label>
+                <select class="form-control" id="catsDropdown" name="catsDropdown"></select>
+
+                <br />
+                <br />
+
+                <label>Price:</label>
+                <input class="form-control" type="number" id="price" placeholder="Price" />
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSave" class="btn btn-default" data-dismiss="modal">Save</button>
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<h1>Products</h1>
+
+
+@using (Html.BeginForm())
+{
+    <hr />
+        <div class="input-group">
+            <input class="form-control" type="text" name="Search" placeholder="Enter Product Name" />
+            <div class="input-group-btn">
+                <button type="submit" class="btn btn-primary">Search</button>
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Create</button>
+            </div>
+        </div>
+
+        }
+        <br />
+        <br />
+        <table class="table">
+            <tr>
+
+                <th>
+                    Name
+                </th>
+                <th>
+                    Year
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Brand
+                </th>
+                <th>
+                    Category
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                        <div class="modal fade" id="@item.ProductName.GetHashCode().ToString()" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h2>Details</h2>
+                                        <h4 class="modal-title">@item.ProductName</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <dl class="dl-horizontal">
+
+                                            <dt>
+                                                @Html.DisplayNameFor(model => model.ProductName)
+                                            </dt>
+
+                                            <dd>
+                                                @item.ProductName
+                                            </dd>
+
+                                            <dt>
+                                                @Html.DisplayNameFor(model => model.BrandName)
+                                            </dt>
+
+                                            <dd>
+                                                @item.BrandName
+                                            </dd>
+
+                                            <dt>
+                                                @Html.DisplayNameFor(model => model.CategoryName)
+                                            </dt>
+
+                                            <dd>
+                                                @item.CategoryName
+                                            </dd>
+
+                                            <dt>
+                                                @Html.DisplayNameFor(model => model.ModelYear)
+                                            </dt>
+
+                                            <dd>
+                                                @item.ModelYear
+                                            </dd>
+
+                                            <dt>
+                                                @Html.DisplayNameFor(model => model.ListPrice)
+                                            </dt>
+
+                                            <dd>
+                                                @item.ListPrice
+                                            </dd>
+
+                                        </dl>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div>
+                                            <table style=" text-align: left; " class="table">
+                                                <tr>
+                                                    <th>Store</th>
+                                                    <th>Quantity</th>
+
+                                                </tr>
+
+                                                @foreach (var itor in item.detailsvms.Where(x => x.productid == item.id))
+                                                {
+                                                    <tr>
+                                                        <td style="margin-left:10%">@itor.store</td>
+                                                        @if (itor.quant == 0)
+                                                        {
+                                                            <td style="color:red">Out Of Stock</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@itor.quant </td>
+                                                        }
+                                                    </tr>
+
+                                                }
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModelYear)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ListPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BrandName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="updateModel" onclick="Update(@item.id)">Edit</button> |
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#@item.ProductName.GetHashCode().ToString()">Details</button> |
+                        <button type="button" class="btn btn-danger" onclick="deletes(@item.id)">Delete</button>
+                    </td>
+                </tr>
+
+            }
+
+        </table>
+
+
+
+        @section Scripts
+{
+            <script type="text/javascript">
+
+        //Load Data in Table when documents is ready
+
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "GetBrands",
+                data: "{}",
+                success: function (data) {
+
+                    var s = '<option value="-1">Please Select a Brand</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        s += '<option value="' + data[i].BrandId + '">' + data[i].BrandName + '</option>';
+                    }
+                    $("#brandsDropdown").html(s);
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "GetCategories",
+                data: "{}",
+                success: function (data) {
+
+                    var s = '<option value="-1">Please Select a Category</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        s += '<option value="' + data[i].CategoryId + '">' + data[i].CategoryName + '</option>';
+                    }
+                    $("#catsDropdown").html(s);
+                }
+            });
+        });
+        function deletes(productID) {
+            var ans = confirm("Are you sure you want to delete this Record?");
+            if (ans) {
+                $.ajax({
+                    url: "delete/" + productID,
+                    typr: "GET",
+                    contentType: "application/json;charset=UTF-8",
+                    dataType: "json",
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (response) {
+                        location.reload();
+                    }
+                });
+            }
+        }
+        function Update(productID) {
+
+
+            $.ajax({
+                url: "GetID/" + productID,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#pid').val(response.id);
+                    $('#name').val(response.ProductName);
+                    $('#year').val(response.ModelYear);
+                    $('#brandsDropdown').val(response.brandID);
+                    $('#catsDropdown').val(response.categoryID);
+                    $('#price').val(response.ListPrice);
+
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+
+
+
+            $("#heading").text("Update Product");
+
+            $('#myModal').modal('show');
+        }
+
+        $('#btnSave').click(function () {
+
+            var name = $('#name').val();
+            var year = $('#year').val();
+            var price = $('#price').val();
+            var brand = $('#brandsDropdown').val();
+            var cat = $('#catsDropdown').val();
+            var pid = $('#pid').val();
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Create")',
+                data: '{ Name: ' + JSON.stringify(name) + ', id: ' + JSON.stringify(pid) + ', price: ' + JSON.stringify(price) + ', brandId: ' + JSON.stringify(brand) + ', categoryID: ' + JSON.stringify(cat) + ', year: ' + JSON.stringify(year) + '}',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+
+
+                success: function (result) {
+                    location.reload();
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        });
+
+            </script>
+
+        }
+

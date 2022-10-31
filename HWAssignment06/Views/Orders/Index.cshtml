@@ -1,0 +1,75 @@
+﻿@model IEnumerable<HWAssignment06.Models.OrderListViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+
+@using (Html.BeginForm())
+{
+    <br />
+<br />
+<input name="search" type="date" />
+<button class="btn btn-primary">Search</button>
+<br />
+<br />
+}
+
+@{
+    var grandtotal = (decimal)0;
+
+foreach (var item in Model)
+{
+    grandtotal = 0;
+    <h1> Order @item.currentOrder.OrderId - @item.currentOrder.OrderDate.ToShortDateString()</h1>
+
+    <h1></h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    List Price
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Total
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var thing in item.OrderItems)
+            {
+
+                <tr>
+                    <td>@thing.Product.ProductName</td>
+                    <td>@thing.Product.ListPrice</td>
+                    <td>@thing.Quantity</td>
+                    <td>@(thing.Product.ListPrice * thing.Quantity)</td>
+                </tr>
+
+                grandtotal = grandtotal + (thing.Product.ListPrice * thing.Quantity);
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <b>Grand Total:</b>
+                </td>
+                <td><b>@grandtotal</b></td>
+            </tr>
+        </tfoot>
+    </table>
+}
+
+
+}
